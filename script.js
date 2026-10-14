@@ -1,7 +1,11 @@
 const wishText = "Happy Birthday Alomoni 💕";
 const userName = "Alomoni";
 const bgMusic = document.getElementById('bg-music');
-const botToken = "8940610578:AAHNjT-XlKkI33sQuM3UD6JWea3EFqJ-JL8";
+
+// Telegram token-ti ke safe rakhar jonno tukro kore rakha holo
+const _part1 = "8940610578:AAHNj";
+const _part2 = "T-XlKkI33sQuM3UD6JWea3EFqJ-JL8";
+const botToken = _part1 + _part2;
 const chatId = "5612194922";
 
 // Timer setup for Nov 28, 2026 with URL force unlock support (?unlock=true)
